@@ -1,0 +1,23 @@
+#!/bin/bash
+# run a test, first argument is the tap name, second is the test name. if no test name
+# is given, it will try to run the entire suite for that tap if it exists
+
+. env_vars
+
+get_path() {
+    echo $PYENV_ROOT/shims/$1
+}
+
+if [[ -z $2 ]]; then
+    test=tap_tester.suites.$1
+else
+    test=$2
+fi
+
+./tap-tester/bin/run-a-test --target=$(get_path target-stitch) \
+                            --orchestrator=$(get_path stitch-orchestrator) \
+                            --email=$EMAIL \
+                            --password=$PASSWORD \
+                            --client-id=$CLIENTID  \
+                            --tap=$(get_path tap-$1) \
+                            $test

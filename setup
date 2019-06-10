@@ -1,0 +1,41 @@
+#!/bin/bash
+# set up required components for tap development
+#
+# Script will:
+# 1. make sure you have python 3.5 installed in pyenv
+# 2. re-create a project wide pyenv version
+# 2. for tap-tester, orchestrator, and target-stitch:
+#   - clone repo
+#   - create pyenv virtualenv named the same as the tap
+#   - install package in editable mode
+#   - add that virtualenv to the project wide pyenv version
+
+top_dir=$(pwd)
+rm .python-version
+
+py3=$(pyenv versions | grep 3.5 | head -n1 | tr -d ' ')
+
+if [[ -z $py3 ]]; then
+    py3=3.5.7
+    pyenv install $py3
+fi
+
+repos=(
+    git@github.com:singer-io/target-stitch.git
+    git@github.com:stitchdata/tap-tester.git
+    git@github.com:stitchdata/orchestrator.git
+)
+
+for repo in ${repos[@]}
+do
+    dir=$(echo $repo | sed -E 's/.+\/([^/]+)\.git/\1/')
+    if [[ ! -e ./$dir ]]; then
+        git clone $repo
+    fi
+    cd $dir
+    pyenv virtualenv --system-site-packages $py3 $dir
+    pyenv local $dir
+    pip install -e .
+    echo $dir >> $top_dir/.python-version
+    cd ..
+done

@@ -1,0 +1,8 @@
+# required stitch credentials
+export EMAIL=<stitch-email>
+export PASSWORD=<stitch-password>
+export CLIENTID=<stitch-client-id>
+
+# tap specific environment vars
+export TAP_STRIPE_ACCOUNT_ID=<stripe-acct-id>
+export TAP_STRIPE_CLIENT_SECRET=<stripe-client-secret>

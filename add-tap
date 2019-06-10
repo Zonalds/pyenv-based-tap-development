@@ -1,0 +1,27 @@
+#!/bin/bash
+# pass in a git repo for a tap you want to add
+# Script will:
+# 1. clone tap into the taps dir
+# 2. create a new pyenv virtualenv using the tap-name
+# 3. install the tap in that virtualenv
+# 4. add that virtualenv to the project wide pyenv version
+
+top_dir=$(pwd)
+mkdir -p taps
+cd taps
+git clone $1
+virtualenvs=$(pyenv virtualenvs)
+
+for dir in $(find . -maxdepth 1 -printf '%P\n' -type d)
+do
+    if [[ ! $virtualenvs =~ $dir ]]; then
+        cd $dir
+        # use system packages to ensure packages like flake8,
+        # elpy, jedi, etc are usable in every tap
+        pyenv virtualenv --system-site-packages $dir
+        pyenv local $dir
+        pip install -e .
+        echo $dir >> $top_dir/.python-version
+        cd ..
+    fi
+done
