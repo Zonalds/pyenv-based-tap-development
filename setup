@@ -39,3 +39,7 @@ do
     echo $dir >> $top_dir/.python-version
     cd ..
 done
+
+if [[ ! -e ./env_vars ]]; then
+    cp env_vars_example env_vars
+fi
