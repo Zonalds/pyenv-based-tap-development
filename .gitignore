@@ -1,1 +1,7 @@
 env_vars
+orchestrator
+tap-tester
+taps
+target-stitch
+singer-tools
+.python-version
