@@ -12,7 +12,7 @@ cd taps
 git clone $1
 virtualenvs=$(pyenv virtualenvs)
 
-for dir in $(find . -maxdepth 1 -printf '%P\n' -type d)
+for dir in $(find . -maxdepth 1 -type d -printf '%P\n')
 do
     if [[ ! $virtualenvs =~ $dir ]]; then
         cd $dir
