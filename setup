@@ -24,6 +24,8 @@ repos=(
     git@github.com:singer-io/target-stitch.git
     git@github.com:stitchdata/tap-tester.git
     git@github.com:stitchdata/orchestrator.git
+    git@github.com:chrisgoddard/singer-discover.git
+    git@github.com:singer-io/singer-tools.git
 )
 
 for repo in ${repos[@]}
